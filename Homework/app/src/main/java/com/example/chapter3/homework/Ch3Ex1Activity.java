@@ -25,6 +25,7 @@ public class Ch3Ex1Activity extends AppCompatActivity {
         loopCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 if (isChecked) {
                     // 当选中自动播放的时候，开始播放 lottie 动画，同时禁止手动修改进度
                     animationView.playAnimation();
@@ -40,6 +41,8 @@ public class Ch3Ex1Activity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                animationView.setProgress(progress/100f);
                 // TODO ex1-2: 这里应该调用哪个函数呢
                 // 提示1：可以参考 https://airbnb.io/lottie/#/android?id=custom-animators
                 // 提示2：SeekBar 的文档可以把鼠标放在 OnProgressChanged 中间，并点击 F1 查看，
@@ -48,6 +51,7 @@ public class Ch3Ex1Activity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                animationView.pauseAnimation();
             }
 
             @Override

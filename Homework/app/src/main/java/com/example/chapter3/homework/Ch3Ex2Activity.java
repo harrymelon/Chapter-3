@@ -2,6 +2,7 @@ package com.example.chapter3.homework;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 public class Ch3Ex2Activity extends AppCompatActivity {
 
     private View target;
+    private View rainbow;
     private View startColorPicker;
     private View endColorPicker;
     private Button durationSelector;
@@ -31,6 +34,7 @@ public class Ch3Ex2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_ch3ex2);
 
         target = findViewById(R.id.target);
+        rainbow = findViewById(R.id.rainbow);
         startColorPicker = findViewById(R.id.start_color_picker);
         endColorPicker = findViewById(R.id.end_color_picker);
         durationSelector = findViewById(R.id.duration_selector);
@@ -126,6 +130,7 @@ public class Ch3Ex2Activity extends AppCompatActivity {
             animatorSet.cancel();
         }
 
+        int speed = Integer.parseInt(durationSelector.getText().toString());
         // 在这里实现了一个 ObjectAnimator，对 target 控件的背景色进行修改
         // 可以思考下，这里为什么要使用 ofArgb，而不是 ofInt 呢？
         ObjectAnimator animator1 = ObjectAnimator.ofArgb(target,
@@ -136,13 +141,37 @@ public class Ch3Ex2Activity extends AppCompatActivity {
         animator1.setRepeatCount(ObjectAnimator.INFINITE);
         animator1.setRepeatMode(ObjectAnimator.REVERSE);
 
+
+        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(target,
+                "scaleX", 1f, 2f);
+        scaleXAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        scaleXAnimator.setInterpolator(new LinearInterpolator());
+        scaleXAnimator.setDuration(speed);
+        scaleXAnimator.setRepeatMode(ValueAnimator.REVERSE);
+
+        ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(target,
+                "scaleY", 1f, 2f);
+        scaleYAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        scaleYAnimator.setInterpolator(new LinearInterpolator());
+        scaleYAnimator.setDuration(speed);
+        scaleYAnimator.setRepeatMode(ValueAnimator.REVERSE);
+
         // TODO ex2-1：在这里实现另一个 ObjectAnimator，对 target 控件的大小进行缩放，从 1 到 2 循环
+
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(target,
+                "alpha", 1f, 0.5f);
+        scaleYAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        scaleYAnimator.setInterpolator(new LinearInterpolator());
+        scaleYAnimator.setDuration(speed);
+        scaleYAnimator.setRepeatMode(ValueAnimator.REVERSE);
 
         // TODO ex2-2：在这里实现另一个 ObjectAnimator，对 target 控件的透明度进行修改，从 1 到 0.5f 循环
 
-        // TODO ex2-3: 将上面创建的其他 ObjectAnimator 都添加到 AnimatorSet 中
         animatorSet = new AnimatorSet();
-        animatorSet.playTogether(animator1);
+        animatorSet.playTogether(animator1, scaleXAnimator, scaleYAnimator, alphaAnimator);
         animatorSet.start();
+
+        // TODO ex2-3: 将上面创建的其他 ObjectAnimator 都添加到 AnimatorSet 中
+
     }
 }
